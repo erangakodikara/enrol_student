@@ -45,6 +45,10 @@ class block_enrol_student extends block_base {
     }
 
     public function get_content() {
+        $context = context_system::instance();
+        $capability = 'block/enrolstudent:view';
+        require_capability($capability, $context);
+
         if ($this->content !== null) {
             return $this->content;
         }
@@ -58,7 +62,6 @@ class block_enrol_student extends block_base {
 
         $this->content->text = $output->render($emaillist);
 
-        $context = context_system::instance();
         $event = \block_enrol_student\event\instrumentation_log::create(
             array('context' => $context)
         );

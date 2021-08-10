@@ -24,6 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021070803;
+$plugin->version   = 2021070806;
 $plugin->requires  = 2019111200;
 $plugin->component = 'block_enrol_student';

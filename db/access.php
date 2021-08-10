@@ -26,16 +26,12 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/enrolstudent:addinstance' => array(
-        'riskbitmask' => RISK_SPAM | RISK_XSS,
-
-        'captype' => 'write',
+    'block/enrolstudent:view' => array(
+        'riskbitmask' => RISK_PERSONAL,
+        'captype' => 'read',
         'contextlevel' => CONTEXT_BLOCK,
         'archetypes' => array(
-            'editingteacher' => CAP_ALLOW,
-//            'manager' => CAP_ALLOW
+            'teacher' => CAP_ALLOW,
         ),
-
-//        'clonepermissionsfrom' => 'moodle/site:manageblocks'
     ),
 );

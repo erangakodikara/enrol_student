@@ -22,7 +22,7 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['enrolstudent:addinstance'] = 'Add a new enrol student block course page';
+$string['enrolstudent:view'] = 'Add a new enrol student block course page';
 $string['newhtmlblock'] = '(new Enrol Student block)';
 $string['pluginname'] = 'Enrol Student';
 $string['eventenrolstudentblock'] = "Event enrol student block";
