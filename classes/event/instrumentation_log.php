@@ -62,8 +62,4 @@ class instrumentation_log extends \core\event\base {
             $this->userid
         );
     }
-
-    public static function get_other_mapping(): array {
-        return [];
-    }
 }
