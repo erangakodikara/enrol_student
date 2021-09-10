@@ -26,12 +26,13 @@ defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
 
-    'block/enrolstudent:view' => array(
-        'riskbitmask' => RISK_PERSONAL,
+    'block/enrol_student:view' => array(
+        'riskbitmask' => RISK_PERSONAL | RISK_SPAM,
         'captype' => 'read',
-        'contextlevel' => CONTEXT_BLOCK,
+        'contextlevel' => CONTEXT_COURSE,
         'archetypes' => array(
             'teacher' => CAP_ALLOW,
+            'editingteacher' => CAP_ALLOW
         ),
     ),
 );

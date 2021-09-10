@@ -21,21 +21,40 @@
 
     Example context (json):
     {
-       "emails" [
-            "student1@gmail.com",
-            "student2@gmail.com",
-            "student3@gmail.com",
-        ]
+       "users" [
+                  [
+                  "email" : s1@example.com
+                   "firstname" " student_1
+                    "lastname" : student_11
+                  ],
+                  [
+                  "email" : s2example.com
+                  "firstname" " student_2
+                  "lastname" : student_22
+                  ],
+               ]
     }
 
   }}
 
-<h6>Email List</h6>
-<ol>
-    {{#emails}}
-        <li>{{{.}}}</li>
-    {{/emails}}
-</ol>
+<h6>Student List</h6>
 
+
+<table >
+    <thead>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#users}}
+        <tr>
+            <td>{{firstname}}</td>
+            <td>{{lastname}}</td>
+        </tr>
+    {{/users}}
+    </tbody>
+</table>
 
 

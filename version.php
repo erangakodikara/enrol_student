@@ -18,12 +18,13 @@
  * Version details
  *
  * @package    block_enrol_students
- * @copyright  1999 onwards Martin Dougiamas (http://dougiamas.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2021070806;
+$plugin->version   = 2021070808;
 $plugin->requires  = 2019111200;
 $plugin->component = 'block_enrol_student';
+$plugin->release = '0.1';
+$plugin->maturity = MATURITY_STABLE;

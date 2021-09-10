@@ -15,8 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 defined('MOODLE_INTERNAL') || die();
+
 global $CFG;
 require_once($CFG->dirroot . '/enrol/locallib.php');
+
 use block_enrol_student\output\email_list;
 
 /**
@@ -45,29 +47,42 @@ class block_enrol_student extends block_base {
     }
 
     public function get_content() {
-        $context = context_system::instance();
-        $capability = 'block/enrolstudent:view';
-        require_capability($capability, $context);
 
-        if ($this->content !== null) {
-            return $this->content;
+        if (optional_param('course', 0, PARAM_INT) > 0) {
+            $courseid = optional_param('course', 0, PARAM_INT);
+        } else {
+            $courseid = optional_param('id', 0, PARAM_INT);
         }
 
-        $this->content = new stdClass;
+        $syscontext = context_system::instance();
 
-        $this->content->items = [];
+        if ($courseid > 0) {
+            $context = context_course::instance($courseid);
+            $capability = 'block/enrol_student:view';
 
-        $output = $this->page->get_renderer('block_enrol_student');
-        $emaillist = new email_list($this->page->course);
+            if (has_capability($capability, $context)) {
 
-        $this->content->text = $output->render($emaillist);
+                if ($this->content !== null) {
+                    return $this->content;
+                }
 
-        $event = \block_enrol_student\event\instrumentation_log::create(
-            array('context' => $context)
-        );
-        $event->trigger();
+                $this->content = new stdClass;
 
-        return $this->content;
+                $this->content->items = [];
+
+                $output = $this->page->get_renderer('block_enrol_student');
+                $emaillist = new email_list($this->page->course);
+
+                $this->content->text = $output->render($emaillist);
+
+                $event = \block_enrol_student\event\instrumentation_log::create(
+                    array('context' => $syscontext)
+                );
+                $event->trigger();
+
+                return $this->content;
+            }
+        }
     }
 }
 

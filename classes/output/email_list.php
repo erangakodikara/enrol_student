@@ -14,10 +14,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Search form renderable.
- */
-
 namespace block_enrol_student\output;
 defined('MOODLE_INTERNAL') || die();
 
@@ -45,14 +41,24 @@ class email_list implements renderable, templatable {
         $this->course = $course;
     }
 
+    /**
+     * @param renderer_base $output
+     * @return array|\stdClass
+     */
     public function export_for_template(renderer_base $output) {
         global $PAGE;
         $manager = new \course_enrolment_manager($PAGE, $PAGE->course, null, 5);
         $userlist = $manager->get_users('id');
         $data = [];
         foreach ($userlist as $user) {
-            $data["emails"][] = $user->email;
+            $data["users"][] = [
+                "email"  =>$user->email,
+                "firstname" => $user->firstname,
+                "lastname" => $user->lastname
+            ];
+
         }
+
         return $data;
     }
 }

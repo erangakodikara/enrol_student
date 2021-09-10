@@ -15,10 +15,10 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace block_enrol_student\output;
+
 defined('MOODLE_INTERNAL') || die();
 
 use plugin_renderer_base;
-use renderable;
 
 class renderer extends plugin_renderer_base {
 

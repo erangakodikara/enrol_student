@@ -20,13 +20,12 @@
  * @package   local_student_course_enrolment
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 namespace block_enrol_student\event;
 
 defined('MOODLE_INTERNAL') || die();
 
-
 class instrumentation_log extends \core\event\base {
+
     /**
      * Init method.
      */
@@ -55,6 +54,9 @@ class instrumentation_log extends \core\event\base {
         return "The user with id '$this->userid' block access data";
     }
 
+    /**
+     * @return array
+     */
     protected function get_legacy_logdata(): array {
         return array(
             "course",
@@ -63,3 +65,4 @@ class instrumentation_log extends \core\event\base {
         );
     }
 }
+
