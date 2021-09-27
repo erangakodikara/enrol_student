@@ -47,7 +47,6 @@ class block_enrol_student extends block_base {
     }
 
     public function get_content() {
-
         if (optional_param('course', 0, PARAM_INT) > 0) {
             $courseid = optional_param('course', 0, PARAM_INT);
         } else {
@@ -79,7 +78,6 @@ class block_enrol_student extends block_base {
                     array('context' => $syscontext)
                 );
                 $event->trigger();
-
                 return $this->content;
             }
         }
