@@ -14,34 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-
 /**
  *
  * @package    enrol_student
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 defined('MOODLE_INTERNAL') || die();
 
-$functions = array(
-    'block_enrol_student_enrol_student_data' => array(
-        'classname' => 'block_enrol_student\external\enrol_student_external',
-        'methodname' => 'enrol_student_data',
-        'classpath' => 'block_enrol_student\external',
-        'description' => 'Return enrolled students',
-        'type' => 'read',
-        'capabilities' => 'block/enrol_student:view',
-        'ajax' => true,
-    ),
-);
-
-$services = array(
-    'WES block enrol student' => array(
-        'functions' => array(
-            'block_enrol_student_enrol_student_data',
-        ),
-        'restrictedusers' => 0,
-        'enabled' => 1,
-    )
-);
-
+define('ROLE_STUDENT', 5);

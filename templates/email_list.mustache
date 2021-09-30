@@ -40,7 +40,7 @@
 <h6>Student List</h6>
 
 
-<table >
+<table>
     <thead>
     <tr>
         <th id="first_name_id" hidden>FirstName</th>
@@ -51,9 +51,11 @@
     <tbody>
     {{#users}}
         <tr>
-            <td id="first_name_id" hidden >{{firstname}}</td>
-            <td id="last_name_id" hidden >{{lastname}}</td>
-            <td><button id="user_id">{{email}}</button></td>
+            <td id="first_name_id" hidden>{{firstname}}</td>
+            <td id="last_name_id" hidden>{{lastname}}</td>
+            <td>
+                <button id="user_id">{{email}}</button>
+            </td>
         </tr>
     {{/users}}
     </tbody>

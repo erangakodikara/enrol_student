@@ -15,17 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * HTML block caps.
  *
- * @package    block_enrol_student
- * @copyright  Mark Nelson <markn@moodle.com>
+ * @package    enrol_student
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
 $capabilities = array(
-
     'block/enrol_student:view' => array(
         'riskbitmask' => RISK_PERSONAL | RISK_SPAM,
         'captype' => 'read',

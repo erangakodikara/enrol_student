@@ -14,12 +14,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ *
+ * @package    enrol_student
+ * @category   output
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace block_enrol_student\output;
 
 defined('MOODLE_INTERNAL') || die();
 
 use plugin_renderer_base;
 
+/**
+ * Class renderer
+ * @package block_enrol_student\output
+ */
 class renderer extends plugin_renderer_base {
 
     /**
@@ -30,8 +40,6 @@ class renderer extends plugin_renderer_base {
      * @throws \moodle_exception
      */
     public function render_email_list(email_list $emaillist) {
-
         return $this->render_from_template('block_enrol_student/email_list', $emaillist->export_for_template($this));
     }
-
 }

@@ -15,15 +15,19 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Instrumentation log.
  *
- * @package   local_student_course_enrolment
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    enrol_student
+ * @category   event
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 namespace block_enrol_student\event;
 
 defined('MOODLE_INTERNAL') || die();
 
+/**
+ * Class instrumentation_log
+ * @package block_enrol_student\event
+ */
 class instrumentation_log extends \core\event\base {
 
     /**
@@ -32,12 +36,9 @@ class instrumentation_log extends \core\event\base {
     protected function init() {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-
     }
 
     /**
-     * Return localised event name.
-     *
      * @return string
      * @throws \coding_exception
      */

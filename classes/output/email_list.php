@@ -14,6 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
+/**
+ *
+ * @package    enrol_student
+ * @category   output
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 namespace block_enrol_student\output;
 defined('MOODLE_INTERNAL') || die();
 
@@ -24,7 +30,7 @@ use templatable;
 /**
  * Email list renderable class.
  *
- * @package    block_search_forums
+ * @package    enrol_student
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class email_list implements renderable, templatable {
@@ -47,16 +53,16 @@ class email_list implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output) {
         global $PAGE;
+        // Remove rolefilter value.
         $manager = new \course_enrolment_manager($PAGE, $PAGE->course, null, 5);
         $userlist = $manager->get_users('id');
         $data = [];
         foreach ($userlist as $user) {
             $data["users"][] = [
-                "email"  =>$user->email,
+                "email" => $user->email,
                 "firstname" => $user->firstname,
                 "lastname" => $user->lastname
             ];
-
         }
 
         return $data;

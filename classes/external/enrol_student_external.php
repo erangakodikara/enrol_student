@@ -29,19 +29,19 @@ require_once($CFG->libdir . "/externallib.php");
 
 use block_enrol_student\output\email_list;
 
+/**
+ * @package    enrol_student
+ * Class enrol_student_external
+ */
 class enrol_student_external extends external_api
 {
 
     /**
-     * Returns description of method parameters
      * @return external_function_parameters
      */
-    public static function enrol_student_data_parameters()
-    {
-
+    public static function enrol_student_data_parameters() {
         // The external_function_parameters constructor expects an array of external_description.
         return new external_function_parameters(
-        // a external_description can be: external_value, external_single_structure or external_multiple structure
             array(
                 'courseid' => new external_value(
                     PARAM_INT,
@@ -58,13 +58,16 @@ class enrol_student_external extends external_api
     }
 
     /**
-     * The function itself
-     * @return string welcome message
+     * @param $courseid
+     * @param $page
+     * @return array
+     * @throws coding_exception
+     * @throws dml_exception
+     * @throws invalid_parameter_exception
      */
-    public static function enrol_student_data($courseid, $page)
-    {
+    public static function enrol_student_data($courseid, $page) {
         global $DB, $OUTPUT;
-        //Parameters validation
+        // Parameters validation.
         $params = self::validate_parameters(self::enrol_student_data_parameters(),
             array('courseid' => $courseid, 'page' => $page)
         );
@@ -93,8 +96,7 @@ class enrol_student_external extends external_api
      * Returns description of method result value
      * @return external_description
      */
-    public static function enrol_student_data_returns()
-    {
+    public static function enrol_student_data_returns() {
         return new external_single_structure(array(
             'pagination' => new external_value(PARAM_RAW, 'First name of the course'),
             'data' => new external_multiple_structure(
