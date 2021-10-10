@@ -19,6 +19,7 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/enrol/locallib.php');
 
+use block_base;
 use block_enrol_student\output\email_list;
 
 /**
@@ -27,29 +28,49 @@ use block_enrol_student\output\email_list;
  * @package    block_enrol_student
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-
 class block_enrol_student extends block_base {
 
+    /**
+     * function init
+     * @throws coding_exception
+     */
     public function init() {
         $this->title = get_string('pluginname', 'block_enrol_student');
     }
 
+    /**
+     * funtion has_config
+     * @return bool
+     */
     public function has_config() {
         return true;
     }
 
+    /**
+     * fuction applicable_formats
+     * @return array|bool[]
+     */
     public function applicable_formats() {
         return array('all' => true);
     }
 
+    /**
+     * funtion instance_allow_multiple
+     * @return bool
+     */
     public function instance_allow_multiple() {
         return true;
     }
 
+    /**
+     * funtion get_content
+     * @return stdClass|stdObject|null
+     * @throws coding_exception
+     * @throws dml_exception
+     */
     public function get_content() {
-        if (optional_param('course', 0, PARAM_INT) > 0) {
-            $courseid = optional_param('course', 0, PARAM_INT);
-        } else {
+        $courseid = optional_param('course', 0, PARAM_INT);
+        if ($courseid == 0) {
             $courseid = optional_param('id', 0, PARAM_INT);
         }
 

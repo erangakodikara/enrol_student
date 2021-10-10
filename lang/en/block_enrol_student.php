@@ -26,4 +26,5 @@ $string['enrol_student:view'] = 'Add a new enrol student block course page';
 $string['newhtmlblock'] = '(new Enrol Student block)';
 $string['pluginname'] = 'Enrol Student';
 $string['eventenrolstudentblock'] = "Event enrol student block";
+$string['email'] = 'Email address';
 

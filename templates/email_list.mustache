@@ -43,27 +43,16 @@
 <table>
     <thead>
     <tr>
-        <th id="first_name_id" hidden>FirstName</th>
-        <th id="last_name_id" hidden> LastName</th>
-        <th>Email</th>
+        <th>{{#str}} email, block_enrol_student {{/str}}</th>
     </tr>
     </thead>
     <tbody>
     {{#users}}
         <tr>
-            <td id="first_name_id" hidden>{{firstname}}</td>
-            <td id="last_name_id" hidden>{{lastname}}</td>
-            <td>
-                <button id="user_id">{{email}}</button>
-            </td>
+            <td>{{email}}</td>
         </tr>
     {{/users}}
     </tbody>
 </table>
 
-{{#js}}
-    require(['block_enrol_student/main'], function(main) {
-    main.init();
-    });
-{{/js}}
 

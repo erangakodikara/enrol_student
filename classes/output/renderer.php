@@ -20,6 +20,7 @@
  * @category   output
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_enrol_student\output;
 
 defined('MOODLE_INTERNAL') || die();
@@ -40,6 +41,9 @@ class renderer extends plugin_renderer_base {
      * @throws \moodle_exception
      */
     public function render_email_list(email_list $emaillist) {
-        return $this->render_from_template('block_enrol_student/email_list', $emaillist->export_for_template($this));
+        return $this->render_from_template(
+            'block_enrol_student/email_list',
+            $emaillist->export_for_template($this)
+        );
     }
 }

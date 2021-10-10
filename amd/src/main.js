@@ -1,20 +1,49 @@
-define(['jquery', 'core/ajax', 'core/templates', 'core/notification'], function ($, ajax, templates, notification) {
-    return {
-        init: function () {
-            $('#user_id').on('click', function () {
-                var promises = ajax.call([{
-                    methodname: 'block_enrol_student_enrol_student_data',
-                    args: {}
-                }]);
-                promises[0].done(function (data) {
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-                    templates.render('block_enrol_student/email_list', data).done(function (html, js) {
-                        $("#first_name_id").show();
-                        $("#last_name_id").show();
-                        templates.runTemplateJS(js);
+define([
+        'jquery',
+        'core/ajax',
+        'core/templates',
+        'core/notification'],
+    function
+        ($,
+         ajax,
+         templates,
+         notification) {
+        return {
+            init: function (courseid, page, perpage) {
+                $('#user_id').on('click', function () {
+                    var promises = ajax.call([{
+                        methodname: 'block_enrol_student_enrol_student_data',
+                        args: {
+                            courseid: courseid,
+                            page: page,
+                            perpage: perpage
+                        }
+                    }]);
+                    promises[0].done(function (data) {
+
+                        templates.render('block_enrol_student/email_list', data)
+                            .done(function (html, js) {
+                                $(".first_name_id").removeAttr('hidden');
+                                $(".last_name_id").removeAttr('hidden');
+                                templates.runTemplateJS(js);
+                            }).fail(notification.exception);
                     }).fail(notification.exception);
-                }).fail(notification.exception);
-            });
-        }
-    };
-});
+                });
+            }
+        };
+    });

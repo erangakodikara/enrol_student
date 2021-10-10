@@ -20,8 +20,12 @@
  * @category   output
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
+
 namespace block_enrol_student\output;
+
 defined('MOODLE_INTERNAL') || die();
+
+require(__DIR__ . '/../../lib.php');
 
 use renderable;
 use renderer_base;
@@ -54,15 +58,15 @@ class email_list implements renderable, templatable {
     public function export_for_template(renderer_base $output) {
         global $PAGE;
         // Remove rolefilter value.
-        $manager = new \course_enrolment_manager($PAGE, $PAGE->course, null, 5);
-        $userlist = $manager->get_users('id');
+        $manager = new \course_enrolment_manager($PAGE, $PAGE->course, null, ROLE_STUDENT);
+        $userlistobj = $manager->get_users('id');
+        $userlist = json_decode(json_encode($userlistobj), true);
+
         $data = [];
-        foreach ($userlist as $user) {
-            $data["users"][] = [
-                "email" => $user->email,
-                "firstname" => $user->firstname,
-                "lastname" => $user->lastname
-            ];
+        if (!empty($userlist)) {
+            foreach ($userlist as $user) {
+                $data["users"][] = $user;
+            }
         }
 
         return $data;

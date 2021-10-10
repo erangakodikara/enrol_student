@@ -35,13 +35,3 @@ $functions = array(
     ),
 );
 
-$services = array(
-    'WES block enrol student' => array(
-        'functions' => array(
-            'block_enrol_student_enrol_student_data',
-        ),
-        'restrictedusers' => 0,
-        'enabled' => 1,
-    )
-);
-

@@ -21,4 +21,4 @@
  */
 defined('MOODLE_INTERNAL') || die();
 
-define('ROLE_STUDENT', 5);
+defined('ROLE_STUDENT') || define('ROLE_STUDENT', 5);
