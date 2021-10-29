@@ -19,6 +19,8 @@ import $ from 'jquery';
 import loadingicon from "core/loadingicon";
 import ModalFactory  from 'core/modal_factory';
 import handlers from 'block_enrol_student/handlers';
+import Notifications from 'core/notification';
+import * as Str from 'core/str';
 
 export let _perPageCount = 25;
 export let _page = 0;
@@ -35,10 +37,33 @@ export let _courseId = null;
 export const init = (courseid,perpage) => {
     _courseId = courseid;
     _perPageCount = perpage;
+
+    populateStrings();
     getEnrolmentBlockData(0,addLoader());
     $(".enrol-student-container").on('click', '#user_id', (e) => loadUserModal(e));
     $('.student-block-pagination').on('click', 'ul.pagination li>a', (e) => loadUserPagination(e));
+};
 
+/**
+ * Populate string for the messages
+ * @method
+ */
+export const populateStrings = () => {
+    var strings = [
+        {
+            key: 'error_title',
+            component: 'block_enrol_student'
+        },
+        {
+            key: 'block_enrol_student_load_error',
+            component: 'block_enrol_student'
+        },
+    ];
+
+    // eslint-disable-next-line promise/catch-or-return
+    Str.get_strings(strings).then(function(results) {
+        _lang = results;
+    });
 };
 
 /**
@@ -67,14 +92,17 @@ export const getEnrolmentBlockData = function (page, addLoader) {
                     } else {
                         $('student-block-pagination').html('');
                     }
+                    removeLoader(addLoader);
                 }).catch(
-
+                    () => handleError(addLoader, _lang[1])
                 );
+            } else {
+                removeLoader(addLoader);
             }
-            removeLoader(addLoader);
+
         },
         fail: function () {
-
+            handleError(addLoader, _lang[1]);
         }
     }]);
 };
@@ -164,4 +192,16 @@ export const removeLoader = (loaderAdded) => {
     $('.loading-icon').remove();
     loaderAdded.resolve();
     $('.enrol-student-container').removeClass('loading');
+};
+
+/**
+ * Display exception message in a notification
+ *
+ * @method
+ * @param loaderAdded {object} added loaded to the dom
+ * @param body {string} the message string for the popup
+ */
+export const handleError =  (loaderAdded, body) => {
+    removeLoader(loaderAdded);
+    Notifications.alert(_lang[0], body);
 };
