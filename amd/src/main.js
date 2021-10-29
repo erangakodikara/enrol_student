@@ -25,7 +25,6 @@ import * as Str from 'core/str';
 export let _perPageCount = 25;
 export let _page = 0;
 export let _lang = [];
-
 export let _courseId = null;
 
 /**
@@ -148,10 +147,6 @@ export const loadUserModal = (e) => {
             "\n" +
             "            </tbody>\n" +
             "        </table>",
-
-        // Can include JS which is run when modal is attached to DOM.
-        // body: Templates.render('block_enrol_student/modal/user', {firstname:"eranga" ,fullname:"eranga kodikara",id:_userId}),
-
     })
         .done(function (modal) {
             modal.show();
