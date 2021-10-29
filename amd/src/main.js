@@ -13,37 +13,155 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-define([
-        'jquery',
-        'core/ajax',
-        'core/templates',
-        'core/notification'],
-    function
-        ($,
-         ajax,
-         templates,
-         notification) {
-        return {
-            init: function (courseid, page, perpage) {
-                $('#user_id').on('click', function () {
-                    var promises = ajax.call([{
-                        methodname: 'block_enrol_student_enrol_student_data',
-                        args: {
-                            courseid: courseid,
-                            page: page,
-                            perpage: perpage
-                        }
-                    }]);
-                    promises[0].done(function (data) {
+import ajax from  'core/ajax';
+import Templates from  'core/templates';
+import $ from 'jquery';
+import loadingicon from "core/loadingicon";
+import ModalFactory  from 'core/modal_factory';
+import handlers from 'block_enrol_student/handlers';
 
-                        templates.render('block_enrol_student/email_list', data)
-                            .done(function (html, js) {
-                                $(".first_name_id").removeAttr('hidden');
-                                $(".last_name_id").removeAttr('hidden');
-                                templates.runTemplateJS(js);
-                            }).fail(notification.exception);
-                    }).fail(notification.exception);
-                });
+export let _perPageCount = 25;
+export let _page = 0;
+export let _lang = [];
+
+export let _courseId = null;
+
+/**
+ * Initialize the main js and register events
+ * @method
+ * @param courseid
+ * @param perpage
+ */
+export const init = (courseid,perpage) => {
+    _courseId = courseid;
+    _perPageCount = perpage;
+    getEnrolmentBlockData(0,addLoader());
+    $(".enrol-student-container").on('click', '#user_id', (e) => loadUserModal(e));
+    $('.student-block-pagination').on('click', 'ul.pagination li>a', (e) => loadUserPagination(e));
+
+};
+
+/**
+ * Get Enrolment Block Data
+ * @param page
+ */
+export const getEnrolmentBlockData = function (page, addLoader) {
+    ajax.call([{
+        methodname: 'block_enrol_student_enrol_student_data',
+        args: {
+            courseid: _courseId,
+            perpage: _perPageCount,
+            page: page
+        },
+        done: function (data) {
+            if (data.data.length > 0) {
+                Templates.renderForPromise(
+                    'block_enrol_student/table/users',
+                    {
+                        users: data.data
+                    }
+                ).then(({html, js}) => {
+                    Templates.replaceNodeContents('.enrol-student-container>tbody', html, js);
+                    if (data.pagination !== '') {
+                        $('.student-block-pagination').html(data.pagination);
+                    } else {
+                        $('student-block-pagination').html('');
+                    }
+                }).catch(
+
+                );
             }
-        };
-    });
+            removeLoader(addLoader);
+        },
+        fail: function () {
+
+        }
+    }]);
+};
+
+/**
+ * Load User Modal
+ * @param e
+ */
+export const loadUserModal = (e) => {
+    e.preventDefault();
+    let _userId = $(e.target).is('a') ? $("#user_id").data('id') : $(e.target).closest('a').data('id');
+    let _firstName = $(e.target).is('a') ? $("#user_id").data('firstname') : $(e.target).closest('a').data('firstname');
+    let _lastName = $(e.target).is('a') ? $("#user_id").data('lastname') : $(e.target).closest('a').data('lastname');
+    let _fullName = $(e.target).is('a') ? $("#user_id").data('fullname') : $(e.target).closest('a').data('fullname');
+
+    // Create Modal Factory.
+    ModalFactory.create({
+        title: 'Student Information',
+        body: "       <table>\n" +
+            "            <tr>\n" +
+            "                <th>ID</th>\n" +
+            "                <th>FIRST NAME</th>\n" +
+            "                <th>LAST NAME</th>\n" +
+            "                <th>FULL NAME</th>\n" +
+            "            </tr>\n" +
+            "            <tbody>\n" +
+            "\n" +
+            "            <tr>\n" +
+            "                <td>" +
+            _userId +
+            "</td>\n" +
+            "                <td>" +
+            _firstName +
+            "</td>\n" +
+            "                <td>" +
+            _lastName +
+            "</td>\n" +
+            "                <td>" +
+            _fullName +
+            "</td>\n" +
+            "\n" +
+            "            </tr>\n" +
+            "\n" +
+            "            </tbody>\n" +
+            "        </table>",
+
+        // Can include JS which is run when modal is attached to DOM.
+        // body: Templates.render('block_enrol_student/modal/user', {firstname:"eranga" ,fullname:"eranga kodikara",id:_userId}),
+
+    })
+        .done(function (modal) {
+            modal.show();
+        });
+
+};
+
+/**
+ *  Load User Pagination
+ *  @method
+ *  @param e
+ */
+export const loadUserPagination = (e) => {
+    e.preventDefault();
+    let _hrefTarget = $(e.target).is('a') ? $(e.target).attr('href') : $(e.target).closest('a').attr('href');
+    _page = handlers.getParameterByName('page', _hrefTarget);
+    getEnrolmentBlockData(_page, addLoader());
+};
+
+/**
+ * Adds a loader to the screen whenever called
+ *
+ * @method
+ * @returns {Window.jQuery|Promise|*}
+ */
+export const addLoader = () => {
+    $('.enrol-student-container').addClass('loading');
+    return loadingicon.addIconToContainerWithPromise($('.enrol-student-container'));
+};
+
+/**
+ * Removes the previously added loader from the screen
+ *
+ * @method
+ * @param loaderAdded {object} added loader to the dom
+ */
+export const removeLoader = (loaderAdded) => {
+    $('.loading-icon').remove();
+    loaderAdded.resolve();
+    $('.enrol-student-container').removeClass('loading');
+};

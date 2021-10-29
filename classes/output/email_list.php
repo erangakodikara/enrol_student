@@ -56,19 +56,12 @@ class email_list implements renderable, templatable {
      * @return array|\stdClass
      */
     public function export_for_template(renderer_base $output) {
-        global $PAGE;
-        // Remove rolefilter value.
-        $manager = new \course_enrolment_manager($PAGE, $PAGE->course, null, ROLE_STUDENT);
-        $userlistobj = $manager->get_users('id');
-        $userlist = json_decode(json_encode($userlistobj), true);
-
-        $data = [];
-        if (!empty($userlist)) {
-            foreach ($userlist as $user) {
-                $data["users"][] = $user;
-            }
-        }
+        $data = [
+            'courseid' => $this->course->id,
+            'perpage' => DEFAULT_STUDENT_PER_PAGE
+        ];
 
         return $data;
     }
 }
+

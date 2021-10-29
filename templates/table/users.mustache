@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template block_enrol_student/email_list
+    @template block_enrol_student/users
 
     This template renders the email list.
 
@@ -37,29 +37,11 @@
 
   }}
 
-<div class="container">
-
-<h6>Student List</h6>
-<div class="row justify-content-start">
-
-<table  class="enrol-student-container table table-bordered loading">
-    <thead>
-    <tr>
-        <th scope="col" >Id</th>
-        <th scope="col" >Email</th>
+{{#users}}
+    <tr class="studentlist">
+        <td scope="col">{{ userid }}</td>
+        <td scope="col">
+          <a href="" id="user_id" data-id="{{userid}}" data-firstname="{{firstname}}" data-lastname="{{lastname}}" data-fullname="{{fullname}}" data-email="{{email}}" >{{ email }}</a>
+        </td>
     </tr>
-    </thead>
-    <tbody>
-    </tbody>
-
-</table>
-</div>
-<div class="student-block-pagination justify-content-center" ></div>
-</div>
-
-{{#js}}
-    require(['block_enrol_student/main'], function(main) {
-    main.init({{courseid}} ,{{perpage}});
-    });
-{{/js}}
-
+{{/users}}
