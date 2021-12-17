@@ -26,6 +26,7 @@ export let _perPageCount = 25;
 export let _page = 0;
 export let _lang = [];
 export let _courseId = null;
+export let _sortOrder = 'ASC';
 
 /**
  * Initialize the main js and register events
@@ -75,7 +76,8 @@ export const getEnrolmentBlockData = function (page, addLoader) {
         args: {
             courseid: _courseId,
             perpage: _perPageCount,
-            page: page
+            page: page,
+            sortdir: _sortOrder,
         },
         done: function (data) {
             if (data.data.length > 0) {
@@ -111,6 +113,7 @@ export const getEnrolmentBlockData = function (page, addLoader) {
  * @param e
  */
 export const loadUserModal = (e) => {
+    // Use API.
     e.preventDefault();
     let _userId = $(e.target).is('a') ? $("#user_id").data('id') : $(e.target).closest('a').data('id');
     let _firstName = $(e.target).is('a') ? $("#user_id").data('firstname') : $(e.target).closest('a').data('firstname');

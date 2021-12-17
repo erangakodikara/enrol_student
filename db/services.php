@@ -33,5 +33,14 @@ $functions = array(
         'capabilities' => 'block/enrol_student:view',
         'ajax' => true,
     ),
+    'block_enrol_student_get_student_data' => array(
+        'classname' => 'block_enrol_student\external\enrol_student_external',
+        'methodname' => 'get_student_data',
+        'classpath' => 'block_enrol_student\external',
+        'description' => 'Return enrolled students',
+        'type' => 'read',
+        'capabilities' => 'block/enrol_student:view',
+        'ajax' => true,
+    ),
 );
 
