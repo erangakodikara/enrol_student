@@ -13,53 +13,43 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-define([], function() {
-    /**
-     * Get parameter value by name from the URI.
-     *
-     * @param name
-     * @param url
-     * @returns {string|null}
-     */
-    var getParameterByName = function(name, url) {
-        name = name.replace(/[\[\]]/g, '\\$&');
-        var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-            results = regex.exec(url);
+/**
+ * getParameterByName
+ * @param name
+ * @param url
+ * @returns {string|null}
+ */
+export const getParameterByName = function (name, url) {
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
 
-        if (!results) {
-            return null;
-        }
+    if (!results) {
+        return null;
+    }
 
-        if (!results[2]) {
-            return '';
-        }
+    if (!results[2]) {
+        return '';
+    }
 
-        return decodeURIComponent(results[2].replace(/\+/g, ' '));
-    };
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+};
 
-    /**
-     * Check and return true if value is empty.
-     *
-     * @param value
-     * @returns {boolean|boolean}
-     */
-    var checkEmpty = function(value) {
-        return (!value || /^\s*$/.test(value));
-    };
+/**
+ * checkEmpty
+ * @param value
+ * @returns {boolean}
+ */
+export const checkEmpty = function (value) {
+    return (!value || /^\s*$/.test(value));
+};
 
-    /**
-     * Check value is undefined.
-     *
-     * @param value
-     * @returns {boolean}
-     */
-    var isUndefined = function(value) {
-        return typeof value === 'undefined';
-    };
+/**
+ * isUndefined
+ * @param value
+ * @returns {boolean}
+ */
+export const isUndefined = function (value) {
+    return typeof value === 'undefined';
+};
 
-    return {
-        getParameterByName: getParameterByName,
-        checkEmpty: checkEmpty,
-        isUndefined: isUndefined
-    };
-});

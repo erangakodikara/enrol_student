@@ -54,6 +54,7 @@ export const populateStrings = () => {
 /**
  * Get Enrolment Block Data
  * @param page
+ * @param addLoader
  */
 export const getEnrolmentBlockData = function (page, addLoader) {
     ajax.call([{
@@ -111,7 +112,7 @@ export const loadUserModal = (e) => {
         },
         done: function (data) {
             ModalFactory.create({
-                title: 'Student Information',
+                title: Str.get_string('enrol_student:title', 'block_enrol_student'),
                 body: Templates.render('block_enrol_student/modal/user', {user: data.data}),
             })
                 .then(function (modal) {
