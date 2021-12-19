@@ -182,15 +182,10 @@ class enrol_student_external extends \external_api
 
     /**
      * get_student_data function
-     * @param $courseid
-     * @param $page
-     * @param $perpage
-     * @param string $sortdir
+     * @param $studentid
      * @return array
-     * @throws \coding_exception
      * @throws \dml_exception
      * @throws \invalid_parameter_exception
-     * @throws \moodle_exception
      */
     public static function get_student_data($studentid) {
         // Parameters validation.
@@ -214,15 +209,13 @@ class enrol_student_external extends \external_api
      */
     public static function get_student_data_returns() {
         return new external_single_structure(array(
-            'pagination' => new external_value(PARAM_RAW, 'First name of the student'),
             'data' => new external_single_structure(array(
-                    'userid' => new external_value(PARAM_INT, 'Enrolled student ID'),
-                    'firstname' => new external_value(PARAM_TEXT, 'Students first name'),
-                    'lastname' => new external_value(PARAM_TEXT, 'Students last name'),
-                    'url' => new external_value(PARAM_URL, 'Student profile url'),
-                    'email' => new external_value(PARAM_EMAIL, 'Students email'),
-                    'fullname' => new external_value(PARAM_TEXT, 'Students full name')
-                ))
+                'id' => new external_value(PARAM_INT, 'Enrolled student ID'),
+                'firstname' => new external_value(PARAM_TEXT, 'Students first name'),
+                'lastname' => new external_value(PARAM_TEXT, 'Students last name'),
+                'url' => new external_value(PARAM_URL, 'Student profile url'),
+                'email' => new external_value(PARAM_EMAIL, 'Students email')
+            ))
         ));
     }
 }
