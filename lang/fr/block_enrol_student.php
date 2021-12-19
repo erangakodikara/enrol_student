@@ -27,3 +27,4 @@ $string['newhtmlblock'] = 'fr (new Enrol Student block)';
 $string['pluginname'] = 'fr Enrol Student';
 $string['eventenrolstudentblock'] = "fr Event enrol student block";
 $string['email'] = 'fr Email address';
+$string['enrol_student:title'] = ' Fr Student Information';

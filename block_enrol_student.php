@@ -19,7 +19,6 @@ defined('MOODLE_INTERNAL') || die();
 global $CFG;
 require_once($CFG->dirroot . '/enrol/locallib.php');
 
-use block_base;
 use block_enrol_student\output\email_list;
 
 /**

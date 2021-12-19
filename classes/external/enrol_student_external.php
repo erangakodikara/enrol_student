@@ -28,6 +28,7 @@ defined('MOODLE_INTERNAL') || die();
 
 global $CFG;
 
+use core_user;
 use course_enrolment_manager;
 use external_multiple_structure;
 use external_function_parameters;
@@ -47,7 +48,6 @@ require(__DIR__ . '/../../lib.php');
  */
 class enrol_student_external extends \external_api
 {
-
     /**
      * enrol_student_data_parameters function
      * @return external_function_parameters
@@ -58,7 +58,7 @@ class enrol_student_external extends \external_api
             array(
                 'courseid' => new external_value(
                     PARAM_INT,
-                    'Page number',
+                    'Course id',
                     VALUE_REQUIRED
                 ),
                 'page' => new external_value(
@@ -71,6 +71,11 @@ class enrol_student_external extends \external_api
                     'Students per page',
                     VALUE_REQUIRED
                 ),
+                'sortdir' => new external_value(
+                    PARAM_TEXT,
+                    'Sort order direction',
+                    VALUE_REQUIRED
+                )
             )
         );
     }
@@ -79,19 +84,24 @@ class enrol_student_external extends \external_api
      * enrol_student_data function
      * @param $courseid
      * @param $page
+     * @param $perpage
+     * @param string $sortdir
      * @return array
-     * @throws coding_exception
-     * @throws dml_exception
-     * @throws invalid_parameter_exception
+     * @throws \coding_exception
+     * @throws \dml_exception
+     * @throws \invalid_parameter_exception
+     * @throws \moodle_exception
      */
-    public static function enrol_student_data($courseid, $page, $perpage) {
+    public static function enrol_student_data($courseid, $page, $perpage, $sortdir = 'ASC') {
         global $OUTPUT, $PAGE;
         // Parameters validation.
         $params = self::validate_parameters(self::enrol_student_data_parameters(),
             [
                 'courseid' => $courseid,
                 'page' => $page,
-                'perpage' => $perpage]
+                'perpage' => $perpage,
+                'sortdir' => $sortdir
+            ]
         );
 
         $context = context_course::instance($courseid);
@@ -150,6 +160,62 @@ class enrol_student_external extends \external_api
                     'fullname' => new external_value(PARAM_TEXT, 'Students full name')
                 ))
             )
+        ));
+    }
+
+    /**
+     * get_student_data_parameters function
+     * @return external_function_parameters
+     */
+    public static function get_student_data_parameters() {
+        // The external_function_parameters constructor expects an array of external_description.
+        return new external_function_parameters(
+            array(
+                'studentid' => new external_value(
+                    PARAM_INT,
+                    'Student id',
+                    VALUE_REQUIRED
+                )
+            )
+        );
+    }
+
+    /**
+     * get_student_data function
+     * @param $studentid
+     * @return array
+     * @throws \dml_exception
+     * @throws \invalid_parameter_exception
+     */
+    public static function get_student_data($studentid) {
+        // Parameters validation.
+        $params = self::validate_parameters(self::get_student_data_parameters(),
+            [
+                'studentid' => $studentid
+            ]
+        );
+
+        $user = core_user::get_user($params['studentid'], '*', MUST_EXIST);
+
+        return [
+            'data' => $user
+        ];
+    }
+
+    /**
+     * get_student_data_returns function
+     * Returns description of method result value
+     * @return external_description
+     */
+    public static function get_student_data_returns() {
+        return new external_single_structure(array(
+            'data' => new external_single_structure(array(
+                'id' => new external_value(PARAM_INT, 'Enrolled student ID'),
+                'firstname' => new external_value(PARAM_TEXT, 'Students first name'),
+                'lastname' => new external_value(PARAM_TEXT, 'Students last name'),
+                'url' => new external_value(PARAM_URL, 'Student profile url'),
+                'email' => new external_value(PARAM_EMAIL, 'Students email')
+            ))
         ));
     }
 }

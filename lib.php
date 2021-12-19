@@ -22,3 +22,4 @@
 defined('MOODLE_INTERNAL') || die();
 
 defined('ROLE_STUDENT') || define('ROLE_STUDENT', 5);
+defined('DEFAULT_STUDENT_PER_PAGE') || define('DEFAULT_STUDENT_PER_PAGE', 25);

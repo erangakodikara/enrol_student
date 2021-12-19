@@ -27,4 +27,6 @@ $string['newhtmlblock'] = '(new Enrol Student block)';
 $string['pluginname'] = 'Enrol Student';
 $string['eventenrolstudentblock'] = "Event enrol student block";
 $string['email'] = 'Email address';
-
+$string['block_enrol_student_load_error'] = 'There is a problem with load student list. Please contact administrator.';
+$string['error_title'] = 'Error!';
+$string['enrol_student:title'] = 'Student Information';
