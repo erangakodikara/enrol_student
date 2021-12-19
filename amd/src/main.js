@@ -13,11 +13,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-import ajax from  'core/ajax';
-import Templates from  'core/templates';
+import ajax from 'core/ajax';
+import Templates from 'core/templates';
 import $ from 'jquery';
 import loadingicon from "core/loadingicon";
-import ModalFactory  from 'core/modal_factory';
+import ModalFactory from 'core/modal_factory';
 import handlers from 'block_enrol_student/handlers';
 import Notifications from 'core/notification';
 import * as Str from 'core/str';
@@ -28,21 +28,6 @@ export let _lang = [];
 export let _courseId = null;
 export let _sortOrder = 'ASC';
 
-/**
- * Initialize the main js and register events
- * @method
- * @param courseid
- * @param perpage
- */
-export const init = (courseid,perpage) => {
-    _courseId = courseid;
-    _perPageCount = perpage;
-
-    populateStrings();
-    getEnrolmentBlockData(0,addLoader());
-    $(".enrol-student-container").on('click', '#user_id', (e) => loadUserModal(e));
-    $('.student-block-pagination').on('click', 'ul.pagination li>a', (e) => loadUserPagination(e));
-};
 
 /**
  * Populate string for the messages
@@ -61,7 +46,7 @@ export const populateStrings = () => {
     ];
 
     // eslint-disable-next-line promise/catch-or-return
-    Str.get_strings(strings).then(function(results) {
+    Str.get_strings(strings).then(function (results) {
         _lang = results;
     });
 };
@@ -113,48 +98,31 @@ export const getEnrolmentBlockData = function (page, addLoader) {
  * @param e
  */
 export const loadUserModal = (e) => {
-    // Use API.
     e.preventDefault();
-    let _userId = $(e.target).is('a') ? $("#user_id").data('id') : $(e.target).closest('a').data('id');
-    let _firstName = $(e.target).is('a') ? $("#user_id").data('firstname') : $(e.target).closest('a').data('firstname');
-    let _lastName = $(e.target).is('a') ? $("#user_id").data('lastname') : $(e.target).closest('a').data('lastname');
-    let _fullName = $(e.target).is('a') ? $("#user_id").data('fullname') : $(e.target).closest('a').data('fullname');
+    var clickedLink = $(e.currentTarget);
+    var userid = clickedLink.data('id');
+    $('.enrol-student-container').addClass('loading');
+    var loaderAdded = loadingicon.addIconToContainerWithPromise($('.enrol-student-container'));
 
-    // Create Modal Factory.
-    ModalFactory.create({
-        title: 'Student Information',
-        body: "       <table>\n" +
-            "            <tr>\n" +
-            "                <th>ID</th>\n" +
-            "                <th>FIRST NAME</th>\n" +
-            "                <th>LAST NAME</th>\n" +
-            "                <th>FULL NAME</th>\n" +
-            "            </tr>\n" +
-            "            <tbody>\n" +
-            "\n" +
-            "            <tr>\n" +
-            "                <td>" +
-            _userId +
-            "</td>\n" +
-            "                <td>" +
-            _firstName +
-            "</td>\n" +
-            "                <td>" +
-            _lastName +
-            "</td>\n" +
-            "                <td>" +
-            _fullName +
-            "</td>\n" +
-            "\n" +
-            "            </tr>\n" +
-            "\n" +
-            "            </tbody>\n" +
-            "        </table>",
-    })
-        .done(function (modal) {
-            modal.show();
-        });
-
+    ajax.call([{
+        methodname: 'block_enrol_student_get_student_data',
+        args: {
+            studentid: userid
+        },
+        done: function (data) {
+            ModalFactory.create({
+                title: 'Student Information',
+                body: Templates.render('block_enrol_student/modal/user', {user: data.data}),
+            })
+                .then(function (modal) {
+                    modal.show();
+                    removeLoader(loaderAdded);
+                });
+        },
+        fail: function () {
+            handleError(loaderAdded, _lang[1]);
+        }
+    }]);
 };
 
 /**
@@ -199,7 +167,23 @@ export const removeLoader = (loaderAdded) => {
  * @param loaderAdded {object} added loaded to the dom
  * @param body {string} the message string for the popup
  */
-export const handleError =  (loaderAdded, body) => {
+export const handleError = (loaderAdded, body) => {
     removeLoader(loaderAdded);
     Notifications.alert(_lang[0], body);
+};
+
+/**
+ * Initialize the main js and register events
+ * @method
+ * @param courseid
+ * @param perpage
+ */
+export const init = (courseid, perpage) => {
+    _courseId = courseid;
+    _perPageCount = perpage;
+
+    populateStrings();
+    getEnrolmentBlockData(0, addLoader());
+    $(".enrol-student-container").on('click', '#user_id', (e) => loadUserModal(e));
+    $('.student-block-pagination').on('click', 'ul.pagination li>a', (e) => loadUserPagination(e));
 };

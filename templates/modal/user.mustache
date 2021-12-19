@@ -15,33 +15,26 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template block_enrol_student/table/users
+    @template block_enrol_student/modal/user
 
-    This template renders the users list.
+    This template renders the user details.
 
     Example context (json):
     {
-       "users" [
-                  [
-                  "email" : s1@example.com
-                   "firstname" " student_1
-                    "lastname" : student_11
-                  ],
-                  [
-                  "email" : s2example.com
-                  "firstname" " student_2
-                  "lastname" : student_22
-                  ],
-               ]
+        "user" [
+            "id" :123,
+            "email" : s1@example.com,
+            "firstname" " student_1,
+            "lastname" : student_11
+              ]
     }
-
   }}
 
-{{#users}}
-    <tr class="studentlist">
-        <td scope="col">{{ userid }}</td>
-        <td scope="col">
-            <a href="" id="user_id" value="{{userid}}" data-id="{{userid}}">{{ email }}</a>
-        </td>
-    </tr>
-{{/users}}
+<form>
+    {{#user}}
+        <label for="id">User Id:</label> <label for="idvalue">{{id}}</label> <br>
+        <label for="email">Email:</label> <label for="emailvalue">{{email}}</label> <br>
+        <label for="fname">First name:</label> <label for="fnamevalue">{{firstname}}</label> <br>
+        <label for="lname">Last name:</label> <label for="lastevalue">{{lastname}}</label> <br>
+    {{/user}}
+</form>
